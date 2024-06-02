@@ -9,7 +9,7 @@ class AuthController extends Controller
 {
     // displays the login form
     public function login() {
-
+        return view('auth.login');
     }
 
     // authenticates the user
