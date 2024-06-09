@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('nodes', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('body');
-            $table->string('info');
+            $table->longText('body');
+            $table->longText('info');
             $table->unsignedBigInteger('parent_id')->nullable();
 
             $table->foreign('parent_id')->references('id')->on('nodes')->onDelete('cascade');

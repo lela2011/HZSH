@@ -2,11 +2,9 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\NodeController;
+use App\Models\Node;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Route;
-
-Route::get('/', function () {
-    return view('welcome');
-});
 
 //*********
 // defines the routes for the AuthController
@@ -26,28 +24,17 @@ Route::post('/logout', [AuthController::class, 'logout'])
     ->name('logout');
 
 
-
 //*********
-// defines the routes for the AuthController
+// defines the routes for the NodeController
 //*********
-
-// defines the index route
-Route::get('/{node?}', [NodeController::class, 'index'])
-    ->middleware('auth')
-    ->name('node.index');
-
-// defines the show route
-Route::get('show/{node}', [NodeController::class, 'show'])
-    ->middleware('auth')
-    ->name('node.show');
 
 // defines the create route
-Route::get('/{node?}/create', [NodeController::class, 'create'])
+Route::get('create/{node?}', [NodeController::class, 'create'])
     ->middleware('auth')
     ->name('node.create');
 
 // defines the store route
-Route::post('{node?}/store', [NodeController::class, 'store'])
+Route::post('store/{node?}', [NodeController::class, 'store'])
     ->middleware('auth')
     ->name('node.store');
 
@@ -61,7 +48,24 @@ Route::post('update/{node}', [NodeController::class, 'update'])
     ->middleware('auth')
     ->name('node.update');
 
-// defines the delete route
-Route::delete('/delete/{node}', [NodeController::class, 'delete'])
+Route::get('delete/{node}', [NodeController::class, 'deleteForm'])
     ->middleware('auth')
     ->name('node.delete');
+
+// defines the delete route
+Route::post('delete/{node}', [NodeController::class, 'delete'])
+    ->middleware('auth')
+    ->name('node.destroy');
+
+// defines the index route
+Route::get('/{node?}', [NodeController::class, 'index'])
+    ->middleware('auth')
+    ->name('node.index');
+
+// defines the iframe route
+Route::get('iframe/{node}', [NodeController::class, 'iframe'])
+    ->missing(function() {
+        $rootNode = Node::whereNull('parent_id')->first();
+        return Redirect::route('node.iframe', $rootNode);
+    })
+    ->name('node.iframe');
