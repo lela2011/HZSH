@@ -71,5 +71,5 @@ Route::get('iframe/{node}', [NodeController::class, 'iframe'])
     ->name('node.iframe');
 
 // defines the iframe root overview route
-Route::get('iframe', [NodeController::class, 'iframe'])
+Route::get('root-finder', [NodeController::class, 'rootFinder'])
     ->name('node.iframe.root');

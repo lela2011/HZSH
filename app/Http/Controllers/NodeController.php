@@ -139,7 +139,7 @@ class NodeController extends Controller
         return view('node.iframe', compact('node', 'parents'));
     }
 
-    public function iframeRoot() {
+    public function rootFinder() {
         // get root nodes
         $rootNodes = Node::whereNull('parent_id')->get();
 
