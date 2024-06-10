@@ -17,8 +17,8 @@ class NodeController extends Controller
             $node->load('parent');
         }
 
-        // get all nodes that have the specified parent node
-        $childNodes = Node::where('parent_id', $node ? $node->id : null)->get();
+        // get all nodes that have the specified parent node and order them by the order column
+        $childNodes = Node::where('parent_id', $node ? $node->id : null)->orderBy('order')->get();
 
         // return the view with the list of nodes
         return view('node.index', compact('childNodes', 'node'));
@@ -44,9 +44,14 @@ class NodeController extends Controller
             'info.required' => 'The info field is required.',
         ]);
 
+        // get the order of the new node
+        $order = Node::where('parent_id', $node ? $node->id : null)->count();
+        $data['order'] = $order;
+
         // purify wysiwyg content
         $data['body'] = clean($data['body']);
         $data['info'] = clean($data['info']);
+
 
         // set the parent node
         if($node) {
@@ -124,6 +129,34 @@ class NodeController extends Controller
 
         // redirect to the parent node
         return redirect()->route('node.index', $node->parent);
+    }
+
+    // displays the update order form for the specified node
+    public function updateOrder(Node $node)
+    {
+        // load parent node and child nodes
+        $node->load('children');
+
+        // return the view with the form to update the order of the child nodes
+        return view('node.updateOrder', compact('node'));
+    }
+
+    // updates the order of the child nodes for the specified node
+    public function updateOrderSubmit(Request $request, Node $node)
+    {
+        // validate the request
+        $formdata = $request->validate([
+            'order' => 'required|array',
+            'order.*' => 'distinct|exists:nodes,id',
+        ]);
+
+        // update the order of the child nodes
+        foreach($request->order as $order => $nodeId) {
+            Node::where('id', $nodeId)->update(['order' => $order]);
+        }
+
+        // redirect to the parent node
+        return redirect()->route('node.index', $node);
     }
 
     // displays the iframe for the specified node

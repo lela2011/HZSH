@@ -57,6 +57,16 @@ Route::post('delete/{node}', [NodeController::class, 'delete'])
     ->middleware('auth')
     ->name('node.destroy');
 
+// defines the update order route
+Route::get('update-order/{node}', [NodeController::class, 'updateOrder'])
+    ->middleware('auth')
+    ->name('node.update-order');
+
+// defines the update order submit route
+Route::post('update-order/{node}', [NodeController::class, 'updateOrderSubmit'])
+    ->middleware('auth')
+    ->name('node.update-order.submit');
+
 // defines the iframe root overview route
 Route::get('/root-finder', [NodeController::class, 'rootFinder']);
 

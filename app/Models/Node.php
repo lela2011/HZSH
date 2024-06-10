@@ -14,6 +14,7 @@ class Node extends Model
         'body',
         'info',
         'parent_id',
+        'order'
     ];
 
     // sets the timestamps to false
@@ -52,6 +53,6 @@ class Node extends Model
     // sets relationship to child nodes
     public function children()
     {
-        return $this->hasMany(Node::class, 'parent_id');
+        return $this->hasMany(Node::class, 'parent_id')->orderBy('order');
     }
 }

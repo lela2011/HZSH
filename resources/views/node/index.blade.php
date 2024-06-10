@@ -77,6 +77,14 @@
                     </div>
                 @endforeach
             </div>
+            @if($node)
+                <div class="bottom-link">
+                    <a href="{{ route('node.update-order', $node) }}" class="Button color-border-white size-large">
+                        Update Order
+                        <span class="material-icons forward-icon">arrow_forward</span>
+                    </a>
+                </div>
+            @endif
         </div>
     </div>
 </x-layout>
