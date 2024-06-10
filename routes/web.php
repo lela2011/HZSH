@@ -57,10 +57,8 @@ Route::post('delete/{node}', [NodeController::class, 'delete'])
     ->middleware('auth')
     ->name('node.destroy');
 
-// defines the index route
-Route::get('/{node?}', [NodeController::class, 'index'])
-    ->middleware('auth')
-    ->name('node.index');
+// defines the iframe root overview route
+Route::get('/root-finder', [NodeController::class, 'rootFinder']);
 
 // defines the iframe route
 Route::get('iframe/{node}', [NodeController::class, 'iframe'])
@@ -70,6 +68,7 @@ Route::get('iframe/{node}', [NodeController::class, 'iframe'])
     })
     ->name('node.iframe');
 
-// defines the iframe root overview route
-Route::get('/root-finder', [NodeController::class, 'rootFinder'])
-->name('node.iframe.root');
+// defines the index route
+Route::get('/{node?}', [NodeController::class, 'index'])
+    ->middleware('auth')
+    ->name('node.index');

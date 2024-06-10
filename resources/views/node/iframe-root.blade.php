@@ -14,10 +14,10 @@
         @foreach ($rootNodes as $node)
             <tr>
                 <td>
-                    $node->name
+                    {{ $node->name }}
                 </td>
                 <td>
-                    $node->id
+                    {{ $node->id }}
                 </td>
                 <td>
                     <a href="{{ route('node.iframe', $node) }}">
