@@ -3,7 +3,8 @@
         <div class="contentArea">
             <div class="TextImage">
                 <a href="{{ route('node.index', $node->parent) }}" class="Button color-border-white size-large">
-                    &#8592; Return to @if ($node->parent) Parent Node @else Root @endif
+                    <span class="material-icons back-icon">arrow_back</span>
+                    Return to @if ($node->parent) Parent Node @else Root @endif
                 </a>
             </div>
         </div>

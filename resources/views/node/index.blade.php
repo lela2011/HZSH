@@ -3,7 +3,8 @@
         <div class="contentArea">
             <div class="TextImage">
                 <a href="{{ route('node.index', $node->parent) }}" class="Button color-border-white size-large">
-                    &#8592; Return to @if ($node->parent) Parent Node @else Root @endif
+                    <span class="material-icons back-icon">arrow_back</span>
+                    Return to @if ($node->parent) Parent Node @else Root @endif
                 </a>
             </div>
         </div>
@@ -64,11 +65,13 @@
                         <div class="horizontal-divider"></div>
                         <div class="quick-action-container">
                             <a class="quick-action edit" href="{{ route('node.edit', $childNode) }}">
-                                &#9998; Edit
+                                <span class="material-icons">edit</span>
+                                Edit
                             </a>
                             <div class="vertical-divider"></div>
                             <a class="quick-action delete" href="{{ route('node.delete', $childNode) }}">
-                                &#128465; Delete
+                                <span class="material-icons">delete</span>
+                                Delete
                             </a>
                         </div>
                     </div>

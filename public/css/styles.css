@@ -39,6 +39,8 @@
     display: flex;
     align-items: center;
     flex-grow: 1;
+    width: 100%;
+    justify-content: center;
 }
 
 .quick-action-container {
@@ -140,4 +142,12 @@
 
 .info-card p:first-of-type {
     margin-top: 8px;
+}
+
+.logout-icon {
+    vertical-align: middle;
+}
+
+.back-icon {
+    margin-right: 8px;
 }
