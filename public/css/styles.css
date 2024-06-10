@@ -56,6 +56,7 @@
     align-items: center;
     text-align: center;
     justify-content: center;
+    gap: 8px;
 }
 
 .quick-action-icon {
