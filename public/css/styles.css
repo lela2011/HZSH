@@ -114,6 +114,7 @@
     transition: 0.3s;
     border-radius: 16px;
     padding: 16px;
+    margin: 8px;
 }
 
 .info-card h2 {
