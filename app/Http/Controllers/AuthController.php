@@ -13,7 +13,7 @@ class AuthController extends Controller
     public function login() {
         // if the user is already logged in, redirect them to the create node page
         if (Auth::check()) {
-            return redirect()->route('node.create');
+            return redirect()->route('node.index');
         }
 
         // otherwise, display the login form
