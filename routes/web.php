@@ -69,3 +69,7 @@ Route::get('iframe/{node}', [NodeController::class, 'iframe'])
         return Redirect::route('node.iframe', $rootNode);
     })
     ->name('node.iframe');
+
+// defines the iframe root overview route
+Route::get('iframe', [NodeController::class, 'iframe'])
+    ->name('node.iframe.root');
