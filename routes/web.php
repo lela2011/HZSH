@@ -48,6 +48,17 @@ Route::post('update/{node}', [NodeController::class, 'update'])
     ->middleware('auth')
     ->name('node.update');
 
+// defines the copy form route
+Route::get('copy/{node}', [NodeController::class, 'copyForm'])
+    ->middleware('auth')
+    ->name('node.copy');
+
+// defines the copy route
+Route::post('copy/{node}', [NodeController::class, 'copy'])
+    ->middleware('auth')
+    ->name('node.copy.create');
+
+// defines the delete form route
 Route::get('delete/{node}', [NodeController::class, 'deleteForm'])
     ->middleware('auth')
     ->name('node.delete');
@@ -71,7 +82,7 @@ Route::post('update-order/{node}', [NodeController::class, 'updateOrderSubmit'])
 Route::get('/root-finder', [NodeController::class, 'rootFinder']);
 
 // defines the iframe route
-Route::get('iframe/{node}', [NodeController::class, 'iframe'])
+Route::get('iframe/{lang}/{node}', [NodeController::class, 'iframe'])
     ->missing(function() {
         $rootNode = Node::whereNull('parent_id')->first();
         return Redirect::route('node.iframe', $rootNode);

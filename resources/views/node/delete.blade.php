@@ -27,13 +27,25 @@
                     <p class="richtext">
                         {{ $node->name }}
                     </p>
+                    <h3>Name English:</h3>
+                    <p class="richtext">
+                        {{ $node->name_en }}
+                    </p>
                     <h3>Body:</h3>
                     <p>
                         {!! $node->body !!}
                     </p>
+                    <h3>Body English:</h3>
+                    <p>
+                        {!! $node->body_en !!}
+                    </p>
                     <h3>Info:</h3>
                     <p>
                         {!! $node->info !!}
+                    </p>
+                    <h3>Info English:</h3>
+                    <p>
+                        {!! $node->info_en !!}
                     </p>
                 </div>
             </div>

@@ -34,6 +34,19 @@
                     @enderror
                 </div>
                 <div class="FormInput">
+                    <label class="FormLabel" for="name_en">
+                        Name English
+                    </label>
+                    <input class="Input" id="name_en" name="name_en" value="{{ old('name_en', $node->name_en) }}">
+                    @error('name_en')
+                    <p class="has-error" style="color: red">
+                        <small>
+                            {{$message}}
+                        </small>
+                    </p>
+                    @enderror
+                </div>
+                <div class="FormInput">
                     <label class="FormLabel" for="body">
                         Body
                     </label>
@@ -47,11 +60,37 @@
                     @enderror
                 </div>
                 <div class="FormInput">
+                    <label class="FormLabel" for="body_en">
+                        Body English
+                    </label>
+                    <textarea class="Input wysiwyg" name="body_en" id="body_en">{{ old('body_en', $node->body_en) }}</textarea>
+                    @error('body_en')
+                    <p class="has-error" style="color: red">
+                        <small>
+                            {{$message}}
+                        </small>
+                    </p>
+                    @enderror
+                </div>
+                <div class="FormInput">
                     <label class="FormLabel" for="info">
                         Info
                     </label>
                     <textarea class="Input wysiwyg" name="info" id="info">{{ old('info', $node->info) }}</textarea>
                     @error('info')
+                    <p class="has-error" style="color: red">
+                        <small>
+                            {{$message}}
+                        </small>
+                    </p>
+                    @enderror
+                </div>
+                <div class="FormInput">
+                    <label class="FormLabel" for="info_en">
+                        Info English
+                    </label>
+                    <textarea class="Input wysiwyg" name="info_en" id="info_en">{{ old('info_en', $node->info_en) }}</textarea>
+                    @error('info_en')
                     <p class="has-error" style="color: red">
                         <small>
                             {{$message}}

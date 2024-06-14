@@ -8,7 +8,10 @@
                 ID
             </th>
             <th>
-                Iframe URL
+                Iframe URL DE
+            </th>
+            <th>
+                Iframe URL EN
             </th>
         </tr>
         @foreach ($rootNodes as $node)
@@ -20,8 +23,13 @@
                     {{ $node->id }}
                 </td>
                 <td>
-                    <a href="{{ route('node.iframe', $node) }}">
-                        {{ route('node.iframe', $node) }}
+                    <a href="{{ route('node.iframe', ['node' => $node, 'lang' => 'de']) }}">
+                        {{ route('node.iframe', ['node' => $node, 'lang' => 'de']) }}
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ route('node.iframe', ['node' => $node, 'lang' => 'en']) }}">
+                        {{ route('node.iframe', ['node' => $node, 'lang' => 'en']) }}
                     </a>
                 </td>
             </tr>

@@ -11,8 +11,11 @@ class Node extends Model
 
     protected $fillable = [
         'name',
+        'name_en',
         'body',
+        'body_en',
         'info',
+        'info_en',
         'parent_id',
         'order'
     ];
@@ -54,5 +57,9 @@ class Node extends Model
     public function children()
     {
         return $this->hasMany(Node::class, 'parent_id')->orderBy('order');
+    }
+
+    public function copyWithChildren() {
+        
     }
 }

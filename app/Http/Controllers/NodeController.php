@@ -34,14 +34,21 @@ class NodeController extends Controller
     // stores the new node in thhe database
     public function store(Request $request, ?Node $node = null)
     {
+        // validate the request
         $data = $request->validate([
             'name' => 'required|string',
-            'body' => 'required|string',
-            'info' => 'required|string',
+            'name_en' => 'required|string',
+            'body' => 'required_with:body_en|nullable|string',
+            'body_en' => 'required_with:body|nullable|string',
+            'info' => 'required_with:info_en|nullable|string',
+            'info_en' => 'required_with:info|nullable|string',
         ], [
             'name.required' => 'The name field is required.',
-            'body.required' => 'The body field is required.',
-            'info.required' => 'The info field is required.',
+            'name_en.required' => 'The English name field is required.',
+            'body.required_with' => 'Please provide the German body',
+            'body_en.required_with' => 'Please provide the English body',
+            'info.required_with' => 'Please provide the German infotext.',
+            'info_en.required_with' => 'Please provide the English infotext.',
         ]);
 
         // get the order of the new node
@@ -49,9 +56,14 @@ class NodeController extends Controller
         $data['order'] = $order;
 
         // purify wysiwyg content
-        $data['body'] = clean($data['body']);
-        $data['info'] = clean($data['info']);
-
+        if($data['body']) {
+            $data['body'] = clean($data['body']);
+            $data['body_en'] = clean($data['body_en']);
+        }
+        if($data['info']) {
+            $data['info'] = clean($data['info']);
+            $data['info_en'] = clean($data['info_en']);
+        }
 
         // set the parent node
         if($node) {
@@ -81,23 +93,110 @@ class NodeController extends Controller
         // validate the request
         $data = $request->validate([
             'name' => 'required|string',
-            'body' => 'required|string',
-            'info' => 'required|string',
+            'name_en' => 'required|string',
+            'body' => 'required_with:body_en|nullable|string',
+            'body_en' => 'required_with:body|nullable|string',
+            'info' => 'required_with:info_en|nullable|string',
+            'info_en' => 'required_with:info|nullable|string',
         ], [
             'name.required' => 'The name field is required.',
-            'body.required' => 'The body field is required.',
-            'info.required' => 'The info field is required.',
+            'name_en.required' => 'The English name field is required.',
+            'body.required_with' => 'Please provide the German body',
+            'body_en.required_with' => 'Please provide the English body',
+            'info.required_with' => 'Please provide the German infotext.',
+            'info_en.required_with' => 'Please provide the English infotext.',
         ]);
 
         // purify wysiwyg content
-        $data['body'] = clean($data['body']);
-        $data['info'] = clean($data['info']);
+        if($data['body']) {
+            $data['body'] = clean($data['body']);
+            $data['body_en'] = clean($data['body_en']);
+        }
+        if($data['info']) {
+            $data['info'] = clean($data['info']);
+            $data['info_en'] = clean($data['info_en']);
+        }
 
         // update the node
         $node->update($data);
 
         // redirect to the parent node
         return redirect()->route('node.index', $node->parent);
+    }
+
+    // displays the copy node form for the specified node
+    public function copyForm(Node $node)
+    {
+        // load parent node
+        $node->load('parent');
+
+        // return the view with the form to copy the node
+        return view('node.copy', compact('node'));
+    }
+
+    // copies the specified node and all of it's children in the database
+    public function copy(Request $request, Node $node)
+    {
+        // load parent node
+        $node->load('parent', 'children');
+
+        // validate the request
+        $data = $request->validate([
+            'name' => 'required|string',
+            'name_en' => 'required|string',
+            'body' => 'required_with:body_en|nullable|string',
+            'body_en' => 'required_with:body|nullable|string',
+            'info' => 'required_with:info_en|nullable|string',
+            'info_en' => 'required_with:info|nullable|string',
+        ], [
+            'name.required' => 'The name field is required.',
+            'name_en.required' => 'The English name field is required.',
+            'body.required_with' => 'Please provide the German body',
+            'body_en.required_with' => 'Please provide the English body',
+            'info.required_with' => 'Please provide the German infotext.',
+            'info_en.required_with' => 'Please provide the English infotext.',
+        ]);
+
+        // purify wysiwyg content
+        if($data['body']) {
+            $data['body'] = clean($data['body']);
+            $data['body_en'] = clean($data['body_en']);
+        }
+        if($data['info']) {
+            $data['info'] = clean($data['info']);
+            $data['info_en'] = clean($data['info_en']);
+        }
+
+        // get the order of the new node
+        $order = Node::where('parent_id', $node->parent_id ?? null)->count();
+        $data['order'] = $order;
+
+        // set the parent node
+        $data['parent_id'] = $node->parent_id;
+
+        // create a new node
+        $newNode = Node::create($data);
+
+        // copy the children
+        $this->copyChildren($node, $newNode->id);
+
+        // redirect to the parent node
+        return redirect()->route('node.index', $node->parent);
+    }
+
+    // copies all children of the specified node
+    public function copyChildren(Node $node, int $newParentId) {
+        // load children
+        $node->load('children');
+        // replicate all children
+        foreach($node->children as $child) {
+            $newChild = $child->replicate();
+            $newChild->parent_id = $newParentId;
+            $newChild->save();
+            $this->copyChildren($child, $newChild->id);
+        }
+
+        return;
     }
 
     // displays the delete node form for the specified node
@@ -160,7 +259,7 @@ class NodeController extends Controller
     }
 
     // displays the iframe for the specified node
-    public function iframe(Node $node)
+    public function iframe(String $lang = 'de', Node $node)
     {
         // load parent node and child nodes
         $node->load('parent', 'children');
@@ -169,7 +268,7 @@ class NodeController extends Controller
         $parents = $node->parents();
 
         // return the view with the iframe
-        return view('node.iframe', compact('node', 'parents'));
+        return view('node.iframe', compact('node', 'parents', 'lang'));
     }
 
     public function rootFinder() {
