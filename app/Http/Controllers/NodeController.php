@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Node;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Mews\Purifier\Facades\Purifier;
 
 class NodeController extends Controller
 {
@@ -56,13 +57,19 @@ class NodeController extends Controller
         $data['order'] = $order;
 
         // purify wysiwyg content
+
+        // allow target="_blank" and target="_self" in links
+        $config = [
+            'Attr.AllowedFrameTargets' => ['_blank', '_self']
+        ];
+
         if($data['body']) {
-            $data['body'] = clean($data['body']);
-            $data['body_en'] = clean($data['body_en']);
+            $data['body'] = Purifier::clean($data['body'], $config);
+            $data['body_en'] = Purifier::clean($data['body_en'], $config);
         }
         if($data['info']) {
-            $data['info'] = clean($data['info']);
-            $data['info_en'] = clean($data['info_en']);
+            $data['info'] = Purifier::clean($data['info'], $config);
+            $data['info_en'] = Purifier::clean($data['info_en'], $config);
         }
 
         // set the parent node
@@ -108,13 +115,19 @@ class NodeController extends Controller
         ]);
 
         // purify wysiwyg content
+
+        // allow target="_blank" and target="_self" in links
+        $config = [
+            'Attr.AllowedFrameTargets' => ['_blank', '_self']
+        ];
+
         if($data['body']) {
-            $data['body'] = clean($data['body']);
-            $data['body_en'] = clean($data['body_en']);
+            $data['body'] = Purifier::clean($data['body'], $config);
+            $data['body_en'] = Purifier::clean($data['body_en'], $config);
         }
         if($data['info']) {
-            $data['info'] = clean($data['info']);
-            $data['info_en'] = clean($data['info_en']);
+            $data['info'] = Purifier::clean($data['info'], $config);
+            $data['info_en'] = Purifier::clean($data['info_en'], $config);
         }
 
         // update the node
@@ -158,14 +171,21 @@ class NodeController extends Controller
         ]);
 
         // purify wysiwyg content
+
+        // allow target="_blank" and target="_self" in links
+        $config = [
+            'Attr.AllowedFrameTargets' => ['_blank', '_self']
+        ];
+
         if($data['body']) {
-            $data['body'] = clean($data['body']);
-            $data['body_en'] = clean($data['body_en']);
+            $data['body'] = Purifier::clean($data['body'], $config);
+            $data['body_en'] = Purifier::clean($data['body_en'], $config);
         }
         if($data['info']) {
-            $data['info'] = clean($data['info']);
-            $data['info_en'] = clean($data['info_en']);
+            $data['info'] = Purifier::clean($data['info'], $config);
+            $data['info_en'] = Purifier::clean($data['info_en'], $config);
         }
+
 
         // get the order of the new node
         $order = Node::where('parent_id', $node->parent_id ?? null)->count();
